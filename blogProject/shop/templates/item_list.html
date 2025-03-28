@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 { color: #2c3e50; }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #ecf0f1;
+        }
+        a.name-link {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛍️ 상품 목록</h1>
+    <a href="{% url 'item_create' %}" class="btn">+ 새 상품 등록</a>
+    <table>
+        <tr>
+            <th>상품명</th>
+            <th>가격</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>
+                <a href="{% url 'item_detail' item.pk %}" class="name-link">{{ item.name }}</a>
+            </td>
+            <td>{{ item.price }}원</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
