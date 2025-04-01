@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>상품 삭제</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #fff;
+            color: #333;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+        }
+        a {
+            text-decoration: none;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>❗ 삭제 확인</h1>
+    <p>정말 "{{ item.name }}"을 삭제하시겠습니까?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-danger">삭제</button>
+        <a href="{% url 'item_detail' item.pk %}">← 돌아가기</a>
+    </form>
+</body>
+</html>

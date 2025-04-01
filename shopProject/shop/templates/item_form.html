@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% if item %}상품 수정{% else %}상품 등록{% endif %}</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>{% if item %}상품 수정{% else %}상품 등록{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>상품명:</label><br>
+        <input type="text" name="name" value="{{ item.name|default:'' }}"><br>
+        <label>상품 설명:</label><br>
+        <textarea name="description">{{ item.description|default:'' }}</textarea><br>
+        <label>가격:</label><br>
+        <input type="number" name="price" step="0.01" value="{{ item.price|default:'' }}"><br>
+        <button type="submit" class="btn">저장</button>
+    </form>
+    <br><a href="{% url 'item_list' %}">← 목록으로</a>
+</body>
+</html>
