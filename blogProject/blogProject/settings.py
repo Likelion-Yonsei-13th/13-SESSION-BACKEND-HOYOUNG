@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blogApp',
+    'accountApp',
 ]
 
 MIDDLEWARE = [
@@ -104,13 +105,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+# USE_I18N = True
+# USE_TZ = True
 
-USE_TZ = True
+USE_I18N = True
+USE_L10N = True
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',  # 추가 번역 파일 경로
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -122,3 +130,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 로그인
+LOGIN_REDIRECT_URL = "home"  # 로그인 성공 후 이동할 페이지
+LOGOUT_REDIRECT_URL = "home"  # 로그아웃 후 이동할 페이지

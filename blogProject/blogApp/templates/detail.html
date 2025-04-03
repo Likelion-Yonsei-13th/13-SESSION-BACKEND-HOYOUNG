@@ -11,6 +11,44 @@
             padding: 0;
         }
 
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: flex-start; /* 왼쪽 정렬 */
+            align-items: center;
+            position: relative;
+        }
+
+        header h1 {
+            color: white;
+            margin-left: 20px; /* 왼쪽 여백 추가 */
+            font-size: 24px; /* 크기 조절 */
+            font-weight: bold;
+            text-align: center; /* 혹시 몰라서 추가 */
+        }
+
+        .nav-bar {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             max-width: 800px;
             margin: 50px auto;
@@ -20,11 +58,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        h1 {
-            font-size: 24px;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
+
 
         .meta {
             color: #777;
@@ -38,7 +72,42 @@
             color: #333;
         }
 
-        a {
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .home-link {
             display: inline-block;
             margin-top: 30px;
             color: #3498db;
@@ -46,7 +115,7 @@
             font-weight: 500;
         }
 
-        a:hover {
+        .home-link:hover {
             color: #2c82c9;
         }
 
@@ -55,20 +124,68 @@
             border-top: 1px solid #ddd;
             margin: 30px 0;
         }
+
+        
+        .nav-links {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-links a, .nav-links button {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #3498db;
+            margin-left: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover, .nav-links button:hover {
+            background-color: #2980b9;
+        }
+
     </style>
 </head>
 <body>
+
+    <header>
+        <h1>호영의 블로그</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <span>환영합니다, {{ user.username }}님!</span>
+                <a href="{% url 'logout' %}">로그아웃</a>
+            {% else %}
+                <a href="{% url 'login' %}">로그인</a>
+                <a href="{% url 'signup' %}">회원가입</a>
+            {% endif %}
+        </div>
+    </header>
+
     <div class="container">
         <h1>{{ post.title }}</h1>
         <div class="meta">
-            <p><strong>작성자:</strong> {{ post.author }} | <em>작성일:</em> {{ post.created_at }}</p>
+            <p><strong>작성자:</strong> {{ post.author }} | <em>작성일:</em> {{ post.created_at|date:"Y년 m월 d일 H:i" }}</p>
         </div>
         <hr>
         <div class="content">
             {{ post.content|linebreaks }}
         </div>
         <hr>
-        <a href="{% url 'home' %}">← 홈으로</a>
+
+        <!-- 현재 로그인한 사용자가 글 작성자인 경우 수정/삭제 버튼 표시 -->
+        {% if user == post.author %}
+            <div class="btn-container">
+                <a href="{% url 'post_edit' post.id %}" class="btn btn-edit">수정하기</a>
+                <a href="{% url 'post_delete' post.id %}" class="btn btn-delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</a>
+            </div>
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="home-link">← 홈으로</a>
     </div>
 </body>
 </html>
