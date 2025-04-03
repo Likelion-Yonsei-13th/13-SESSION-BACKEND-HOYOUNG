@@ -16,6 +16,30 @@
             color: white;
             padding: 20px 0;
             text-align: center;
+            position: relative;
+        }
+
+        .nav-links {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-links a, .nav-links button {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #3498db;
+            margin-left: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover, .nav-links button:hover {
+            background-color: #2980b9;
         }
 
         .container {
@@ -71,21 +95,58 @@
             border: none;
             border-top: 1px solid #ddd;
             margin: 30px 0;
+        
         }
+
+        .detail-text {
+            color: #007bff;  /* 부모 요소의 글자색을 따라감 */
+            text-decoration: underline;  /* 기본 밑줄 제거 */
+            background: none;  /* 배경 제거 */
+            padding: 0;  /* 내부 여백 제거 */
+            border: none;  /* 테두리 제거 */
+            display: inline; /* 인라인 요소 유지 */
+        }
+
+        .detail-text:hover, .detail-text:focus, .detail-text:active {
+            background: none;  /* 배경 변화 없음 */
+            text-decoration: underline;  /* 마우스를 올리면 밑줄만 표시 */
+            color: inherit;  /* 색상 변화 없음 */
+            outline: none;  /* 포커스 효과 제거 */
+        }
+
+
+
+
     </style>
 </head>
 <body>
     <header>
         <h1>호영의 블로그</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'post_create' %}">새 글 작성</a>
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <button onclick="document.getElementById('logout-form').submit();">로그아웃</button>
+            {% else %}
+                <a href="{% url 'login' %}">로그인</a>
+                <a href="{% url 'signup' %}">회원가입</a>
+            {% endif %}
+        </div>
     </header>
     <div class="container">
-        <a href="{% url 'post_create' %}">+ 새 글 작성</a>
         <hr>
         {% for post in posts %}
             <div class="post">
                 <h2>{{ post.title }}</h2>
                 <p>작성자: {{ post.author }}</p>
                 <p>작성일: {{ post.created_at }}</p>
+                
+                {% if user.is_authenticated %}
+                <p><a href="{% url 'post_detail' post.id %}" class="detail-text">자세히 보기</a></p>
+                {% endif %}
+
             </div>
         {% empty %}
             <p class="no-posts">작성된 글이 없습니다.</p>
